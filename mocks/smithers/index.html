@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Clari — talk your business into being</title>
+<style>
+  :root{
+    --ink:#0d1117;
+    --bg:#f4efe7;
+    --paper:#fbf8f2;
+    --line:#e4dccb;
+    --accent:#e8602c;      /* warm ember */
+    --accent-2:#1b6f5c;    /* deep jade  */
+    --muted:#6b6155;
+    --glow:rgba(232,96,44,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Georgia","Times New Roman",serif;
+    background:
+      radial-gradient(1100px 600px at 78% -8%,var(--glow),transparent 60%),
+      radial-gradient(900px 500px at -10% 110%,rgba(27,111,92,.14),transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    min-height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 20px;
+  }
+  .app{
+    width:min(1060px,100%);
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:26px;
+    box-shadow:0 34px 90px -40px rgba(13,17,23,.5);
+    overflow:hidden;
+  }
+  /* top chrome */
+  .bar{
+    display:flex;align-items:center;gap:14px;
+    padding:16px 24px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#fff,rgba(255,255,255,0));
+  }
+  .logo{
+    display:flex;align-items:center;gap:10px;
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-weight:800;letter-spacing:-.02em;font-size:19px;
+  }
+  .mark{
+    width:26px;height:26px;border-radius:8px;
+    background:conic-gradient(from 210deg,var(--accent),#f7a072,var(--accent-2),var(--accent));
+    box-shadow:0 6px 16px -6px var(--accent);
+  }
+  .tag{
+    margin-left:auto;
+    font-family:system-ui,sans-serif;font-size:12px;font-weight:600;
+    color:var(--accent-2);
+    border:1px solid rgba(27,111,92,.3);
+    padding:5px 11px;border-radius:999px;
+    background:rgba(27,111,92,.06);
+  }
+  /* hero */
+  .hero{padding:46px 44px 20px}
+  .eyebrow{
+    font-family:system-ui,sans-serif;
+    font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:18px;
+  }
+  h1{
+    font-size:clamp(30px,4.6vw,52px);
+    line-height:1.06;letter-spacing:-.02em;
+    max-width:16ch;font-weight:700;
+  }
+  h1 em{font-style:italic;color:var(--accent-2)}
+  .sub{
+    font-family:system-ui,sans-serif;
+    margin-top:16px;color:var(--muted);font-size:16px;max-width:52ch;line-height:1.5;
+  }
+  /* interaction card */
+  .stage{
+    margin:30px 44px 20px;
+    background:linear-gradient(180deg,#fff, #fbf6ee);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:22px;
+  }
+  .prompt{
+    font-family:system-ui,sans-serif;
+    display:flex;align-items:center;gap:12px;
+    color:var(--muted);font-size:14px;margin-bottom:14px;
+  }
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 0 5px var(--glow);animation:pulse 2s infinite}
+  @keyframes pulse{50%{box-shadow:0 0 0 10px transparent}}
+  .mic{
+    display:flex;align-items:center;gap:16px;
+  }
+  .micbtn{
+    flex:none;
+    width:74px;height:74px;border-radius:50%;border:none;cursor:pointer;
+    background:radial-gradient(circle at 34% 30%,#ff8a5c,var(--accent));
+    box-shadow:0 14px 30px -10px var(--accent),inset 0 -3px 8px rgba(0,0,0,.15);
+    color:#fff;position:relative;transition:transform .15s;
+  }
+  .micbtn:active{transform:scale(.94)}
+  .micbtn svg{width:30px;height:30px}
+  .micbtn.live{animation:ring 1.4s infinite}
+  @keyframes ring{0%{box-shadow:0 14px 30px -10px var(--accent),0 0 0 0 var(--glow)}
+    100%{box-shadow:0 14px 30px -10px var(--accent),0 0 0 26px transparent}}
+  .said{font-family:system-ui,sans-serif;font-size:15px;color:var(--ink);line-height:1.5}
+  .said span{color:var(--muted)}
+  .caret{border-right:2px solid var(--accent);animation:blink 1s steps(1) infinite;padding-right:2px}
+  @keyframes blink{50%{border-color:transparent}}
+  /* generated plan */
+  .plan{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+    padding:0 44px 40px;
+    font-family:system-ui,sans-serif;
+  }
+  .cell{
+    border:1px solid var(--line);border-radius:16px;padding:16px 16px 18px;
+    background:#fff;opacity:0;transform:translateY(10px);
+    transition:opacity .5s,transform .5s;
+  }
+  .cell.show{opacity:1;transform:none}
+  .cell h3{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);margin-bottom:8px}
+  .cell p{font-size:14px;color:var(--muted);line-height:1.45}
+  .cell .num{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.02em}
+  @media(max-width:720px){.plan{grid-template-columns:1fr}.hero{padding:34px 26px 12px}
+    .stage{margin:24px 26px}.plan{padding:0 26px 32px}}
+</style>
+</head>
+<body>
+  <main class="app">
+    <div class="bar">
+      <div class="logo"><span class="mark"></span>Clari</div>
+      <span class="tag">● drafting your plan, live</span>
+    </div>
+
+    <section class="hero">
+      <div class="eyebrow">Business plans, out loud</div>
+      <h1>Just <em>talk</em>. Clari turns the conversation into your business plan.</h1>
+      <p class="sub">No blank page, no templates. Describe the idea like you'd tell a friend — Clari structures the market, the model, and the numbers as you speak.</p>
+    </section>
+
+    <section class="stage">
+      <div class="prompt"><span class="dot"></span> Clari is listening — tell it what you're building</div>
+      <div class="mic">
+        <button class="micbtn" id="mic" aria-label="Talk to Clari">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2Z"/></svg>
+        </button>
+        <div class="said" id="said"><span>Tap the mic and say something like…</span> <span class="caret" id="caret">&nbsp;</span></div>
+      </div>
+    </section>
+
+    <section class="plan" id="plan">
+      <div class="cell"><h3>The Idea</h3><p id="c1">—</p></div>
+      <div class="cell"><h3>Who it's for</h3><p id="c2">—</p></div>
+      <div class="cell"><h3>Year 1 revenue</h3><p><span class="num" id="c3">—</span></p></div>
+    </section>
+  </main>
+
+<script>
+  const line = "a local-first roastery that ships single-origin coffee by subscription…";
+  const cells = [
+    ["c1","Curated single-origin coffee, roasted local, shipped on a recurring subscription."],
+    ["c2","Home brewers 25–45 who want cafe-grade beans without the cafe run."],
+    ["c3","$180K"]
+  ];
+  const said = document.getElementById('said');
+  const caret = document.getElementById('caret');
+  const mic = document.getElementById('mic');
+  const cellEls = document.querySelectorAll('#plan .cell');
+
+  let running = false;
+  mic.addEventListener('click', () => {
+    if (running) return; running = true;
+    mic.classList.add('live');
+    said.innerHTML = '';
+    cellEls.forEach(c=>c.classList.remove('show'));
+    document.getElementById('c1').textContent='—';
+    document.getElementById('c2').textContent='—';
+    document.getElementById('c3').textContent='—';
+
+    let i = 0;
+    const type = () => {
+      if (i <= line.length){
+        said.innerHTML = '"' + line.slice(0,i) + '"<span class="caret">&nbsp;</span>';
+        i++;
+        setTimeout(type, 26);
+      } else {
+        mic.classList.remove('live');
+        reveal();
+      }
+    };
+    setTimeout(type, 260);
+
+    const reveal = () => {
+      cells.forEach(([id,val],k)=>{
+        setTimeout(()=>{
+          document.getElementById(id).textContent = val;
+          cellEls[k].classList.add('show');
+          if (k===cells.length-1) running=false;
+        }, 300 + k*420);
+      });
+    };
+  });
+</script>
+</body>
+</html>
